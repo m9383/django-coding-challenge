@@ -1,0 +1,10 @@
+Dear Sales team,
+Please find the expiring licenses for the client {{ client.client_name }} below
+
+{% for license in expired_licenses %}
+        License id: {{ license.id }}
+        License Type: {{ license.get_license_type_display }}
+        Name of the package: {{ license.get_package_display }}
+        Expiration date: {{ license.expiration_datetime }}
+        POC info (name & email): {{ license.client.poc_contact_name }} - {{ license.client.poc_contact_email }}
+{% endfor %}

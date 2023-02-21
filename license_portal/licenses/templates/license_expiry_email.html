@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <div>
+        <p>Dear Sales team,</p>
+        <p>Please find the expiring licenses for the client {{ client.client_name }} below</p>
+
+    </div>
+    <div>
+        <table>
+            <tr>
+                <th>License id</th>
+                <th>License Type</th>
+                <th>Name of the package</th>
+                <th>Expiration date</th>
+                <th>POC info (name & email)</th>
+            </tr>
+        {% for license in expiring_licenses %}
+            <tr>
+                <td>{{ license.id }}</td>
+                <td>{{ license.get_license_type_display }}</td>
+                <td>{{ license.get_package_display }}</td>
+                <td>{{ license.expiration_datetime }}</td>
+                <td>{{ license.client.poc_contact_name }} - {{ license.client.poc_contact_email }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
+
+<style>
+    td {
+        text-align: left;
+        padding: 10px;
+    }
+    th {
+        text-align: left;
+        padding: 10px;
+    }
+</style>

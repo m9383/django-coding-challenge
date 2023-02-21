@@ -1,6 +1,19 @@
 Django Coding Challenge
 =======================
 
+## Solving notes:
+- In production environment, Gunicorn would be used
+- Pagination would be added to list of notifications
+- I added test data with user "admin":"admin" to make testing easier
+- Tests should be more granulated
+- There is /email view to see rendered email example (random client/license data)
+- frontend automatically calls the POST method
+- The fields for notification summary were not specified, I added client, license count and date
+
+
+# Instructions
+
+
 Hi, this is the castLabs Django coding challenge. This challenge is designed to test your Django and Python skills.
 
 Requirements

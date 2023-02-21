@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.urls import include, re_path
+
+from licenses.views import EmailRenderView
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r"^admin/", admin.site.urls),
+    re_path(r"^email/", EmailRenderView.as_view()),
+    re_path(r"^api/", include(("api.urls", "api"), namespace="api")),
 ]

@@ -1,15 +1,67 @@
+version: "3.2"
 services:
-  license-server:
+  license-api:
+    container_name: license-api
+    command: python manage.py runserver 0.0.0.0:8000
+    #command: python manage.py test
     build:
       context: ./license_portal
     links:
-      - postgres
+      - database
     volumes:
       - ./license_portal:/app
-
-  postgres:
+    ports:
+        - 8000:8000
+    depends_on:
+      #- rabbitmq
+      - database
+      - migration
+  license-frontend:
+    container_name: license-frontend
+    command: http-server dist
+    build:
+      context: ./license_frontend
+    ports:
+      - 8080:8080
+    links:
+      - license-api
+  migration:
+    build:
+      context: ./license_portal
+    command: python manage.py migrate --noinput
+    volumes:
+      - ./license_portal:/app
+    depends_on:
+      - database
+  database:
+    container_name: database
     image: 'postgres:13'
     environment:
      POSTGRES_USER: 'licenses'
      POSTGRES_PASSWORD: 'licenses'
      POSTGRES_DB: 'licenses'
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  # rabbitmq:
+  #  image: 'rabbitmq:latest'
+  #  container_name: rabbitmq
+  #  restart: always
+  #  ports:
+  #    - 5672:5672
+  #  volumes:
+  #    - rabbitmq_data:/var/lib/rabbitmq
+  #celery-worker:
+  #  container_name: celery-worker
+  #  command: celery -A config worker --pool=prefork -l info
+  #  build:
+  #    context: ./license_portal
+  #  volumes:
+  #    - ./license_portal:/app
+  #  depends_on:
+  #    - rabbitmq
+  #    - database
+
+
+volumes:
+  db_data:
+  rabbitmq_data:
